@@ -1,0 +1,159 @@
+/* Resetear márgenes y padding para todo el documento */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Fuente global y color de fondo */
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f5f5;  /* Fondo gris muy claro */
+    color: #333;  /* Color de texto principal */
+    line-height: 1.8;  /* Mejor legibilidad con mayor altura de línea */
+    padding: 30px;  /* Espaciado general para el contenido */
+  }
+  
+  /* Estilo para el contenedor principal */
+  #app {
+    max-width: 1100px;
+    margin: 0 auto;  /* Centra el contenido */
+    padding: 40px;
+    background-color: #fff;  /* Fondo blanco para el contenido principal */
+    border-radius: 12px;  /* Bordes redondeados */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);  /* Sombra más suave y grande */
+    transition: transform 0.3s ease;
+  }
+  
+  /* Efecto de hover para el contenedor principal */
+  #app:hover {
+    transform: translateY(-5px);  /* Efecto de elevación al pasar el ratón */
+  }
+  
+  /* Estilo para el encabezado */
+  h1 {
+    font-size: 3rem;
+    color: #3498db;  /* Azul relajante */
+    margin-bottom: 40px;
+    text-align: center;
+    font-weight: 700;
+  }
+  
+  /* Estilo para los botones */
+  button {
+    background-color: #3498db;  /* Azul para los botones */
+    color: #fff;  /* Texto blanco */
+    font-size: 1.1rem;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 20px;
+  }
+  
+  button:hover {
+    background-color: #2980b9;  /* Color azul más oscuro al pasar el ratón */
+    transform: scale(1.05);  /* Agrandar ligeramente al pasar el ratón */
+  }
+  
+  button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.5);  /* Resplandor al hacer clic */
+  }
+  
+  /* Estilo para las secciones */
+  section {
+    padding: 40px;
+    margin-bottom: 50px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);  /* Sombra suave */
+    transition: transform 0.3s ease;
+  }
+  
+  section:hover {
+    transform: translateY(-10px);  /* Efecto de elevación al pasar el ratón */
+  }
+  
+  /* Estilo de texto de las secciones */
+  section h2 {
+    font-size: 2.2rem;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    text-align: left;
+    font-weight: 600;
+  }
+  
+  section p {
+    font-size: 1.1rem;
+    color: #7f8c8d;  /* Gris claro para el texto */
+    line-height: 1.8;
+    margin-bottom: 20px;  /* Espaciado adicional entre párrafos */
+  }
+  
+  /* Estilos para el footer */
+  footer {
+    text-align: center;
+    font-size: 1rem;
+    color: #7f8c8d;
+    margin-top: 50px;
+    margin-bottom: 10px;
+  }
+  
+  /* Estilo para las imágenes (como logo) */
+  img {
+    max-width: 80%;  /* Limitar el tamaño de la imagen */
+    height: auto;
+    display: block;
+    margin: 20px auto;  /* Centrar la imagen */
+  }
+  
+  /* Estilo para enlaces */
+  a {
+    color: #3498db;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Estilos responsivos */
+  @media (max-width: 1024px) {
+    /* Ajustar el padding y tamaños en pantallas más pequeñas */
+    #app {
+      padding: 20px;
+    }
+  
+    h1 {
+      font-size: 2.5rem;
+    }
+  
+    section {
+      padding: 30px;
+    }
+  
+    button {
+      padding: 10px 20px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    #app {
+      padding: 15px;
+    }
+  
+    h1 {
+      font-size: 2rem;  /* Título más pequeño en pantallas pequeñas */
+    }
+  
+    section {
+      padding: 20px;
+    }
+  
+    button {
+      padding: 8px 16px;  /* Botones más pequeños */
+    }
+  }
+  
