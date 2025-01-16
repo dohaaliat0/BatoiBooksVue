@@ -1,7 +1,6 @@
-
 <script>
-export default {}
 import { store } from '../store'
+
 export default {
     name: 'AppMessages',
     computed: {
