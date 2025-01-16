@@ -7,8 +7,8 @@ export const store = {
   state: reactive({
     books: [],
     modules: [],
-    cart: []  // Estado para almacenar los libros en el carrito
-  }),
+    messages: [],
+    }),
 
   // Método para añadir un libro al carrito
   addToCart(book) {
@@ -23,6 +23,7 @@ export const store = {
       return nuevoLibro;
     } catch (error) {
       alert(error);
+      store.state.messages.push(error)
     }
   },
 
@@ -32,6 +33,14 @@ export const store = {
     const modulos = await getDBModules();
     store.state.books = libros;
     store.state.modules = modulos;
+    try {
+      const libros = await getDBBooks();
+      const modulos = await getDBModules();
+      store.state.books = libros;
+      store.state.modules = modulos;
+  } catch (error) {
+      store.state.messages.push(error)
+  }
   },
 
   // Método para eliminar un libro
@@ -39,12 +48,30 @@ export const store = {
     const libro = await removeDBBook(id);
     const index = store.state.books.indexOf(libro);
     store.state.books.splice(index, 1);
+    try {
+      const libro = await removeDBBook(id)
+      const index = store.state.books.indexOf(libro)
+      store.state.books.splice(index, 1)
+  } catch (error) {
+      store.state.messages.push(error)
+  }
   },
 
   // Método para cambiar un libro
   async changeBook(libro) {
-    const libroCambiado = await changeDBBook(libro);
-    const index = store.state.books.indexOf(libro);
-    store.state.books.splice(index, 1, libroCambiado);
-  }
+    const libroCambiado = await changeDBBook(libro)
+        const index = store.state.books.indexOf(libro)
+        store.state.books.splice(index, 1, libroCambiado)
+        try {
+            const libroCambiado = await changeDBBook(libro)
+            const index = store.state.books.indexOf(libro)
+            store.state.books.splice(index, 1, libroCambiado)
+        } catch (error) {
+            store.state.messages.push(error)
+        }
+    },
+
+  remove(index) {
+    store.state.messages.splice(index, 1);
+}
 };
