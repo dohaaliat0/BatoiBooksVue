@@ -1,7 +1,7 @@
 // store.js
 import { reactive } from 'vue';
-import { addDBBook, getDBBooks, removeDBBook } from './books.api';
 import { getDBModules } from './modules.api';
+import { addDBBook, getDBBooks, removeDBBook, getDBBook, changeDBBook } from './books.api'
 
 export const store = {
   state: reactive({
@@ -59,19 +59,31 @@ export const store = {
 
   // Método para cambiar un libro
   async changeBook(libro) {
-    const libroCambiado = await changeDBBook(libro)
-        const index = store.state.books.indexOf(libro)
-        store.state.books.splice(index, 1, libroCambiado)
+    const libroCambiado = await changeDBBook(libro);
+    const index = this.state.books.findIndex(book => book.id === libro.id);
+    store.state.books.splice(index, 1, libroCambiado)
         try {
-            const libroCambiado = await changeDBBook(libro)
-            const index = store.state.books.indexOf(libro)
-            store.state.books.splice(index, 1, libroCambiado)
-        } catch (error) {
-            store.state.messages.push(error)
+          const libroCambiado = await changeDBBook(libro)
+          const index = this.state.books.findIndex(book => book.id === libro.id)
+          store.state.books.splice(index, 1, libroCambiado)
+      } catch (error) {
+          store.state.messages.push(error)
         }
     },
 
   remove(index) {
     store.state.messages.splice(index, 1);
-}
+},
+
+
+getDBBook(id) {
+    try{
+        return getDBBook(id)
+    } catch (error) {
+        store.state.messages.push(error)
+
+      }
+    }
+  
+
 };
