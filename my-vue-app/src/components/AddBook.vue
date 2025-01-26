@@ -1,33 +1,64 @@
 <script>
-import { store } from '../store'
+import { mapActions, mapState } from 'pinia';
+import { useDataStore } from '../stores/store';
+import { ErrorMessage, Form, Field } from 'vee-validate';
+
 export default {
     name: 'AddBook',
+    components: {
+        ErrorMessage,
+        Form,
+        Field,
+    },
     computed: {
-        books() {
-            return store.state.books
-        },
-        modules() {
-            return store.state.modules
-        }
+        ...mapState(useDataStore, {
+            books: 'books',
+            modules: 'modules',
+        }),
     },
     methods: {
-        addBook() {
-            store.addBook(this.newBook)
-            this.newBook = {}
-        }
+        ...mapActions(useDataStore, ['changeBook', 'addBook', 'getDBBook']),
+        async addOrEdit() {
+            if (this.isEdit) {
+                await this.changeBook(this.newBook);
+            } else {
+                await this.addBook(this.newBook);
+            }
+            this.newBook = {};
+            this.isEdit = false;
+        },
+        async loadForm() {
+            const bookId = this.$route.params.id;
+            if (bookId) {
+                const book = await this.getDBBook(bookId);
+                this.isEdit = true;
+                this.newBook = book;
+            } else {
+                this.isEdit = false;
+                this.newBook = {};
+            }
+        },
+    },
+    watch: {
+        $route() {
+            this.loadForm();
+        },
     },
     data() {
         return {
             newBook: {},
-        }
+            isEdit: false,
+          }
+    },
+    mounted() {
+        this.loadForm()
     }
 }
 </script>
 
 <template>
-      <h1 id="form-title">Añadir Libro</h1>
-    <h1 id="form">Añadir Libro</h1>
-    <form @submit.prevent="addBook" id="bookForm">
+    <h1 id="form">{{ isEdit ? 'Editar Libro' : 'Añadir Libro' }}</h1>
+    <Form @submit="addOrEdit" id="bookForm">
         <div>
             <label> Id:</label>
             <input v-model="newBook.id" type="text" id="id" disabled>
@@ -35,52 +66,43 @@ export default {
 
         <div>
             <label for="id-module">Módulo:</label>
-            <select v-model="newBook.moduleCode" id="id-module" required>
+            <Field as="select" name="moduleCode" v-model="newBook.moduleCode" id="id-module" required>
                 <option value="" disabled selected>- Selecciona un módulo -</option>
-                <option v-for="modulo in modules" :value="modulo.code">{{modulo.cliteral}}</option>
-            </select>
-            <span class="error"> </span>
+                <option v-for="modulo in modules" :value="modulo.code">{{ modulo.cliteral }}</option>
+            </Field>
+            <ErrorMessage name="moduleCode" class="error" />
         </div>
 
         <div>
             <label for="publisher">Editorial:</label>
-            <input v-model="newBook.publisher" type="text" id="publisher" required>
-            <span class="error"> </span>
-
+            <Field name="publisher" v-model="newBook.publisher" type="text" id="publisher" required></Field>
+            <ErrorMessage name="publisher" class="error" />
         </div>
 
         <div>
             <label for="price">Precio:</label>
-            <input v-model="newBook.price" type="number" id="price" required min="0" step="0.01" placeholder="0.00">
-            <span class="error"> </span>
-
+            <Field name="price" v-model="newBook.price" type="number" id="price" required min="0" step="0.01" placeholder="0.00"></Field>
+            <ErrorMessage name="price" class="error" />
         </div>
 
         <div>
             <label for="pages">Páginas:</label>
-            <input v-model="newBook.pages" type="number" id="pages" required min="0" step="1" placeholder="0">
-            <span class="error"> </span>
-
+            <Field name="pages" v-model="newBook.pages" type="number" id="pages" required min="0" step="1" placeholder="0"></Field>
+            <ErrorMessage name="pages" class="error" />
         </div>
 
         <div>
             <label>Estado:</label>
-            <input type="radio" id="nuevo" value="nuevo" v-model="newBook.status" name="status" required>
+            <Field name="status" type="radio" id="nuevo" value="new" v-model="newBook.status" required></Field>
             <label for="nuevo">Nuevo</label>
-            <input type="radio" id="bueno" value="bueno" v-model="newBook.status" name="status" required>
-            <label for="viejo">Bueno</label>
-            <input type="radio" id="malo" value="malo" v-model="newBook.status" name="status" required>
-            <label for="viejo">Malo</label>
-            <span class="error"> </span>
-
+            <Field name="status" type="radio" id="bueno" value="good" v-model="newBook.status" required></Field>
+            <label for="bueno">Bueno</label>
+            <Field name="status" type="radio" id="malo" value="bad" v-model="newBook.status" required></Field>
+            <label for="malo">Malo</label>
+            <ErrorMessage name="status" class="error" />
         </div>
 
-        <div>
-            <label for="comments">Comentarios:</label>
-            <textarea v-model="newBook.comments" id="comments"></textarea>
-        </div>
-
-        <button type="submit">Añadir</button>
+        <button type="submit">{{ isEdit ? 'Guardar Cambios' : 'Añadir' }}</button>
         <button type="reset">Reset</button>
-    </form>
+    </Form>
 </template>
